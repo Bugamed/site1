@@ -1,0 +1,8 @@
+baseURL = 'https://example.org/'
+defaultContentLanguage = 'ru'
+locale = 'en-us'
+title = 'site1'
+theme = 'PaperMod'
+
+[params]
+  description = 'Information site'

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://example.org/posts/</loc>
+    <lastmod>2026-05-19T23:49:41+03:00</lastmod>
+  </url><url>
+    <loc>https://example.org/</loc>
+    <lastmod>2026-05-19T23:49:41+03:00</lastmod>
+  </url><url>
+    <loc>https://example.org/posts/tretya-statya/</loc>
+    <lastmod>2026-05-19T23:49:41+03:00</lastmod>
+  </url><url>
+    <loc>https://example.org/posts/pervaya-statya/</loc>
+    <lastmod>2026-05-19T23:37:06+03:00</lastmod>
+  </url><url>
+    <loc>https://example.org/posts/vtoraya-statya/</loc>
+    <lastmod>2026-05-14T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://example.org/categories/</loc>
+  </url><url>
+    <loc>https://example.org/tags/</loc>
+  </url>
+</urlset>
