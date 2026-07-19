@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Install Hugo
@@ -22,39 +22,27 @@ jobs:
       - name: Build site
         run: hugo
 
-      - name: Install AWS CLI
+      - name: Install rclone
         run: |
-          sudo apt-get update
-          sudo apt-get install -y awscli
+          curl https://rclone.org/install.sh | sudo bash
 
-      - name: Check AWS CLI
-        run: aws --version
-
-      - name: Test S3 connection
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.TIMEWEB_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.TIMEWEB_SECRET_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.TIMEWEB_REGION }}
+      - name: Configure rclone
         run: |
-          echo "Listing buckets..."
-          aws s3 ls \
-            --endpoint-url="${{ secrets.TIMEWEB_ENDPOINT }}"
+          mkdir -p ~/.config/rclone
+          cat << 'EOF' > ~/.config/rclone/rclone.conf
+          ${{ secrets.RCLONE_CONFIG }}
+          EOF
+
+      - name: Check connection
+        run: |
+          rclone lsd timeweb:
 
       - name: Upload website
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.TIMEWEB_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.TIMEWEB_SECRET_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.TIMEWEB_REGION }}
         run: |
-          aws s3 sync public/ s3://${{ secrets.TIMEWEB_BUCKET }} \
-            --endpoint-url="${{ secrets.TIMEWEB_ENDPOINT }}" \
-            --delete
+          rclone sync public timeweb:${{ secrets.TIMEWEB_BUCKET }} \
+            --progress \
+            --delete-during
 
-      - name: Verify uploaded files
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.TIMEWEB_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.TIMEWEB_SECRET_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.TIMEWEB_REGION }}
+      - name: Verify upload
         run: |
-          aws s3 ls s3://${{ secrets.TIMEWEB_BUCKET }} \
-            --endpoint-url="${{ secrets.TIMEWEB_ENDPOINT }}"
+          rclone ls timeweb:${{ secrets.TIMEWEB_BUCKET }}
