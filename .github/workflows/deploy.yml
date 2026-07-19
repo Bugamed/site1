@@ -1,0 +1,36 @@
+name: Build and Deploy Hugo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: latest
+          extended: true
+
+      - name: Build site
+        run: hugo
+
+      - name: Configure AWS CLI
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.TIMEWEB_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.TIMEWEB_SECRET_KEY }}
+          aws-region: ${{ secrets.TIMEWEB_REGION }}
+
+      - name: Upload to Timeweb S3
+        run: |
+          aws s3 sync public/ s3://${{ secrets.TIMEWEB_BUCKET }} \
+            --endpoint-url=${{ secrets.TIMEWEB_ENDPOINT }} \
+            --delete
