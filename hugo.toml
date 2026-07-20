@@ -3,6 +3,8 @@ defaultContentLanguage = 'ru'
 locale = 'en-us'
 title = 'site1'
 theme = 'PaperMod'
+relativeURLs = true
+canonifyURLs = false
 
 [params]
   description = 'Information site'
