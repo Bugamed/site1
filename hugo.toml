@@ -5,6 +5,7 @@ title = 'site1'
 theme = 'PaperMod'
 relativeURLs = true
 canonifyURLs = false
+uglyURLs = true
 
 [params]
   description = 'Information site'
